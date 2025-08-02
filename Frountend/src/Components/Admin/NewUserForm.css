@@ -1,0 +1,110 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+   
+} 
+
+.roww {
+  display: flex;
+  flex-wrap: wrap;
+  /* margin-right: -15px;
+  margin-left: -15px; */
+  color: white;
+
+}
+
+.password-field {
+  position: relative; 
+}
+
+.my-lebal{
+  display: block;
+  margin-bottom: 5px; 
+  
+}
+
+select,
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 30px;
+  border: 3px solid #cccccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* .mybutton { */
+/* .new-user-form__button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: -33%;
+  margin-left: 35%;
+  font-weight: 600;
+ 
+} */
+
+/* .mybutton:hover { */
+/* .new-user-form__button:hover {
+  background-color: #087b0d;
+  border: 2px solid white;
+} */
+
+/* .mybutton:disabled { */
+/* .new-user-form__button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+} */
+
+/* .mybutton:focus { */
+/* .new-user-form__button:focus {
+  outline: none;
+} */
+
+/* .mybutton:active { */
+/* .new-user-form__button:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 5px rgba(83, 80, 80, 0.993);
+} */
+
+/* .mybutton[type="reset"] { */
+/* .new-user-form__button[type="reset"] {
+  background-color: #f44336;
+} */
+
+/* .mybutton[type="reset"]:hover { */
+/* .new-user-form__button[type="reset"]:hover {
+  background-color: #da190b;
+} */
+
+.password-info-icon{
+  margin-left: 5px;
+  font-size: 15px;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 15px; /* Adjust right positioning */
+  top: 55%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for perfect centering */
+  cursor: pointer;
+  color: black;
+
+}
+
+.form-group {
+  margin: 1rem 0; /* Add margin on top and bottom */
+}
+
+
+
+.outerbox{
+  width: "100%";
+  margin-left: "-40px";
+}

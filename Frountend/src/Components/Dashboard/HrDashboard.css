@@ -1,0 +1,127 @@
+/* .hr-dashboard {
+  background-color: #f8f9fa;
+}
+
+.header {
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.cards-wrapper {
+  background-color: black;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.dynamic-card {
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+
+.dynamic-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.card-with-white-shadow:hover {
+  box-shadow: 0 8px 18px rgba(255, 255, 255, 0.8);
+}
+
+.rounded-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.chart-wrapper {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  
+
+ 
+  
+}
+ .mycls{
+  border-radius: 10px}
+
+
+
+
+
+
+
+
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #9e6dfa, #f04098);
+}
+.bg-gradient-warning {
+  background: linear-gradient(135deg, rgb(232, 21, 21), rgb(246, 246, 86));
+}
+  
+.bg-gradient-success {
+  background: linear-gradient(135deg, #17784b, #b7d3b7);
+}
+.bg-gradient-danger {
+  background: linear-gradient(135deg, #e01025, #ef8787);
+}
+
+
+.bg-gradient-primaryy {
+  background: linear-gradient(135deg, #48015a, #bca5c0);
+}
+
+.bg-gradient-warningg {
+  background: linear-gradient(135deg, #636300fe, #ece7bc);
+}
+
+.bg-gradient-successs {
+  background: linear-gradient(135deg, #8f3802, #eed3a7);
+}
+
+.bg-gradient-dangerr {
+  background: linear-gradient(135deg, #eb6302, #ffeb9b);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(135deg, #1273a3, #81d4fa);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #149f04, #93d8a2);
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(135deg, #e61d7a, #e7b6da);
+}
+
+
+.card-container {
+  margin: 10px;
+}
+
+.content-expanded {
+  width: calc(100% - 250px);
+  transition: width 0.3s ease;
+}
+
+.content-collapsed {
+  width: calc(100% - 80px);
+  transition: width 0.3s ease;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+ul li {
+  list-style: none;
+  font-size: 0.9rem;
+  color: #ffffff;
+} */

@@ -1,0 +1,9 @@
+/* .custom-modal .modal-dialog {
+    border: 1px solid black; 
+    border-radius: 0.5rem; 
+  }
+   */
+  .custom-modal .modal-content {
+    border: 3px solid black; 
+  }
+  

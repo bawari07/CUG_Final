@@ -1,0 +1,177 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.my-container-hr{
+  max-width: 1280px;
+  /* max-height: 1300px; */
+  /* min-height: 99.3vh;
+  margin: 2px auto;
+  padding: 20px; */
+  /* background-color: rgb(210, 213, 255); */
+  /* border: 8px solid white; */
+  /* border-radius: 4px;
+  margin-right: 20px;
+  margin-left: 20px; */
+  
+
+}
+
+.h-1 {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 20px;
+  border: 2px solid rgb(232, 225, 225);
+  /* background-color: rgb(77, 90, 232); */
+  /* background-color: #3a4f63;
+  color: white; */
+  background-color: black;
+  color: white;
+  padding: 3px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  color: white;
+  /* background: linear-gradient(grey,grey,black); */
+  /* border: 2px solid white;  */
+  
+  
+}
+
+.input-container {
+  position: relative; /* Make container position relative to position button inside it */
+  width: 100%;
+}
+
+.input-container input {
+  width: 100%; /* Ensure input takes full width */
+  padding-right: 40px; /* Add padding to make space for the button */
+}
+
+
+.ml-2{
+  position: absolute;
+  right: 10px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%); /* Vertically center the button */
+  cursor: pointer;
+  color: #007bff; /* Adjust color as needed */
+  z-index: 1; /* Ensure button is above the input */
+}
+
+/* 
+.form-group {
+    margin-bottom: 20px;
+  margin-top: 15px;
+  
+} */
+
+.my-lebal {
+  display: block;
+  margin-bottom: 5px;
+  
+}
+
+select,
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 3px solid #cccccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.mybutton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  /* margin-right: -31%; */
+  /* margin-left: 34%; */
+  margin-right: -106%;
+  margin-left: 111%;
+  margin-top: 18px;
+  width: 140px;
+  font-weight: 600;
+}
+
+.mybutton:hover {
+  background-color: #087b0d;
+}
+
+.mybutton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.mybutton:focus {
+  outline: none;
+}
+
+.mybutton:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 5px rgba(83, 80, 80, 0.993);
+}
+
+.mybutton[type="reset"] {
+  background-color: #f44336;
+}
+
+.mybutton[type="reset"]:hover {
+  background-color: #da190b;
+}
+.mybutton[type="back"] {
+  background-color: #553eb3;
+}
+
+.mybutton[type="back"]:hover {
+  background-color: #112273;
+}
+
+#homeAddress{
+  /* width: 204%; */
+  width: 100%;
+  height: 45px;
+}
+.mandatory {
+  color: red;
+  font-weight: 900;
+}
+label{
+font-weight: 700;
+}
+.Address_icon{
+  margin-left: 8px;
+}
+
+
+
+/* .activation-fields {
+  position: relative;
+  left: -20px; 
+  top: 20px;  
+} */
+/* .homeAddress{
+  margin-left: 20px;
+} */
+
+ /* .activation-fields {
+  position: relative;
+   left: 600px;
+  top: -265px;   
+}  */

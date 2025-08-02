@@ -1,0 +1,108 @@
+.sim-status-container {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+
+.sim-status-row {
+  display: flex;
+  margin: 0;
+}
+
+.sim-status-content {
+  flex: 1;
+  transition: margin-left 0.3s;
+}
+
+.sim-status-content-expanded {
+  margin-left: 250px; 
+}
+
+.sim-status-content-collapsed {
+  margin-left: 0;
+}
+
+.sim-status-form-section {
+  padding: 20px;
+  background-color: #f8f9fa;
+  margin-right: 10px;
+}
+
+.sim-status-title {
+  text-align: center;
+  background-color: #3a4f63;
+  color: white;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.sim-status-form-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.sim-status-form-item {
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.sim-status-form-item:last-child {
+  margin-right: 0;
+}
+
+.sim-status-form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#regionn, #branchLocationn, #requestStatus {
+  width: 350px;
+  padding: 5px;
+  border: 2px solid #3a4f63;
+  border-radius: 4px;
+}
+
+.sim-status-table-section {
+  margin-top: 5px;
+  margin-left: 20px;
+  margin-right: 30px;
+}
+
+.sim-status-table {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: #fff;
+}
+
+.sim-status-table thead th {
+  background-color: #6baaed;
+  border: 1px solid black;
+}
+
+.sim-status-table tbody td {
+  background-color: #e9ecef;
+  border: 1px dotted black;
+}
+
+.sim-status-table th, .sim-status-table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.sim-status-content-expanded {
+  width: calc(100% - 250px);
+}
+
+.sim-status-content-collapsed {
+  width: calc(100% - 80px);
+}
+
+.sim-status-row-completed {
+  background-color: #10e040; 
+}
+
+.sim-status-row-pending {
+  background-color: #e03745; 
+}

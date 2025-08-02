@@ -1,0 +1,22 @@
+.container-fluid {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+  }
+  
+  .content-expanded {
+    margin-left: 250px; 
+    transition: margin-left 0.3s ease;
+  }
+  
+  .content-collapsed {
+    margin-left: 80px; 
+    transition: margin-left 0.3s ease;
+  }
+  
+  .data-grid-container {
+    margin-left: 2rem;
+    margin-right: 2.5rem;
+    margin-top: 3rem;
+    
+  }

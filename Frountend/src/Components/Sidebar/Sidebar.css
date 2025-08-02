@@ -1,0 +1,24 @@
+/* .custom-sidebar {
+  min-width: 240px;
+  transition: width 0.3s ease;
+  background-color: #343a40;
+  color: white;
+}
+
+.in_out {
+  background: white;
+  border: 1px solid #e5ebf0;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.nav-link:hover {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+  transition: text-shadow 0.2s ease-in-out;
+}
+
+.nav-item .nav-link:hover {
+  text-shadow: 0 0 10px rgba(156, 234, 221, 0.9);
+  transition: text-shadow 0.2s ease-in-out;
+} */

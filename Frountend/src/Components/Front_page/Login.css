@@ -1,0 +1,115 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.Login-container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-ppanel {
+  width: 85%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+.right-ppanel {
+  width: 40%;
+  background-color: #010911;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.form-cs {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.my-lebel {
+  position: relative; /* Allow positioning of child elements */
+  margin-bottom: 10px;
+}
+
+.my-input {
+  width: 100%;
+  padding: 8px;
+  padding-right: 40px; /* Space for the eye icon */
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 3px solid #ccc;
+  border-radius: 4px;
+}
+
+.forgetpas {
+  margin-bottom: 15px;
+  text-decoration: none;
+  color: #e4e5ec;
+}
+
+.forgetpas:hover {
+  color: red;
+}
+
+.login-btn {
+  background-color: #028fcb;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.login-btn:hover {
+  border: 1.5px solid white;
+}
+
+.logo-img {
+  width: 170px;
+  height: auto;
+  margin-bottom: 20px;
+  border: 1px solid #070228;
+  background-color: #010911;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+.loading-placeholder {
+  width: 170px;
+  height: 170px;
+  background-color: #ccc;
+  margin-bottom: 20px;
+}
+
+.cug-title {
+  margin-bottom: 20px;
+  font-size: 25px;
+  font-weight: bold;
+  font-family: Arial;
+  background: linear-gradient(to right, #84b0f7, #3e3ed4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px; /* Adjust this value for perfect alignment */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer; /* Change cursor to pointer for better UX */
+  z-index: 1; /* Ensure it appears above other elements */
+}
