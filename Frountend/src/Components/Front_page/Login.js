@@ -86,7 +86,7 @@ const Login = ({ onLogin }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://cuguat.midlandmicrofin.co.in/api/auth/login",
         // https://cuguat.midlandmicrofin.co.in/
         // http://localhost:4000
         { employeeCode, password }

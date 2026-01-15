@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = "hhttp://localhost:4000/api";
-// https://cuguat.midlandmicrofin.co.in/
-// http://localhost:4000
+const API_URL = "https://cuguat.midlandmicrofin.co.in/api";
+// https://cuguat.midlandmicrofin.co.in/api
+// http://localhost:4000/api
 
 const getEmployeeDetails = async (employeeCode) => {
   try {

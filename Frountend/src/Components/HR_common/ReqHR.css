@@ -47,7 +47,7 @@
 }
 
 .input-container {
-  position: relative; /* Make container position relative to position button inside it */
+  position: relative; 
   width: 100%;
 }
 

@@ -32,6 +32,7 @@ import SuccessModal from "../HR_common/hrsuccessmodal";
 import ErrorModal from "./hrerrormodal";
 import WarningModal from "./warningmodal";
 import VipModal from "./vipmodal";
+import AadharValidationModal from "./AadharValidationModal";
 
 function ReqHR() {
   const [region, setRegion] = useState("");
@@ -45,9 +46,7 @@ function ReqHR() {
   const [designation, setDesignation] = useState("");
   const [branchLocation, setBranchLocation] = useState("");
   const [homeAddress, setHomeAddress] = useState("");
-  // new code
-  const [pinCode, setPincode] = useState(""); 
-
+  const [pinCode, setPincode] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showOldSimFields, setShowOldSimFields] = useState(false);
@@ -70,6 +69,9 @@ function ReqHR() {
   const [vipModalOpen, setVipModalOpen] = useState(false);
   const [specialNumber, setSpecialNumber] = useState(false);
   const [isHeadOffice, setIsHeadOffice] = useState(false);
+  const [aadharValidationError, setAadharValidationError] = useState(false);
+  const [manualAadharEntry, setManualAadharEntry] = useState(false);
+  const [originalAadhar, setOriginalAadhar] = useState("");
 
   const theme = React.useMemo(
     () =>
@@ -124,19 +126,23 @@ function ReqHR() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!/^\d{12}$/.test(aadharCardNumber)) {
+      setErrorMessage("Please enter a valid 12-digit Aadhar number");
+      setErrorModalOpen(true);
+      return;
+    }
+
     if (!remark) {
       setErrorMessage("Remark is mandatory");
       setErrorModalOpen(true);
       return;
     }
 
-    // new 
     if (!pinCode) {
       setErrorMessage("Pincode is mandatory");
       setErrorModalOpen(true);
       return;
     }
-
 
     const ReqData = {
       requestType,
@@ -150,7 +156,7 @@ function ReqHR() {
       designation,
       branchLocation,
       homeAddress,
-      pinCode, // Include pincode in the request data
+      pinCode,
       workEmail,
       aadharCardNumber,
       panCardNumber,
@@ -198,7 +204,7 @@ function ReqHR() {
     setShowOldSimFields("");
     setHomeAddress("");
     // new code
-    setPincode(""); 
+    setPincode("");
     setErrorMessages([]);
     setShowErrorModal(false);
     setRequestType("");
@@ -208,6 +214,9 @@ function ReqHR() {
     setPanCardNumber("");
     setRemark("");
     setSpecialNumber(kingMode);
+    setAadharValidationError(false);
+    setManualAadharEntry(false);
+    setOriginalAadhar("");
   };
 
   const handleEditClick = () => {
@@ -230,9 +239,11 @@ function ReqHR() {
           if (employeeInfo && employeeInfo.length > 0) {
             const employee = employeeInfo[0];
             setEmployeedetails(employee);
+
             if (employee["employee Status"] != "Active") {
               setShowWarningModal(true);
             }
+
             const fullName = `${employee["first name"] || ""} ${
               employee["middle name"] || ""
             } ${employee["last name"] || ""}`.trim();
@@ -246,13 +257,27 @@ function ReqHR() {
             const address = employee["permanent Address"] || null;
             const formattedAddress = address ? formatAddress(address) : null;
             setHomeAddress(formattedAddress);
-            
-            // new code
             setPincode(employee["permanent pin"] || null);
             setRegion(employee["region"] || null);
             setBranchLocation(employee["branches"] || null);
             setDob(formatDate(employee["date of birth"]) || null);
-            setAadharCardNumber(employee["aadhar no."] || null);
+
+            const fetchedAadhar = employee["aadhar no."] || "";
+            setOriginalAadhar(fetchedAadhar);
+
+            // Check if Aadhar is valid (12 digits exactly)
+            const isValidAadhar = /^\d{12}$/.test(fetchedAadhar);
+
+            if (!fetchedAadhar || !isValidAadhar) {
+              setAadharValidationError(true);
+              setAadharCardNumber("");
+              setManualAadharEntry(true);
+            } else {
+              setAadharCardNumber(fetchedAadhar);
+              setAadharValidationError(false);
+              setManualAadharEntry(false);
+            }
+
             setPanCardNumber(employee["pan no."] || null);
             setDataLoaded(true);
           } else {
@@ -314,7 +339,7 @@ function ReqHR() {
     return `${year}-${month}-${day}`;
   };
 
-  const maskAadharNumber = (number=[]) => {
+  const maskAadharNumber = (number = []) => {
     if (number?.length > 4) {
       return "*".repeat(number?.length - 4) + number?.slice(-4);
     }
@@ -349,6 +374,14 @@ function ReqHR() {
 
   const handleVipModalClose = () => {
     setVipModalOpen(false);
+  };
+
+  const handleAadharManualEntry = () => {
+    setAadharValidationError(false);
+    setManualAadharEntry(true);
+    if (originalAadhar && !/^\d{12}$/.test(originalAadhar)) {
+      setAadharCardNumber("");
+    }
   };
 
   return (
@@ -386,7 +419,7 @@ function ReqHR() {
                   width: 40,
                   height: 40,
                   backgroundColor: kingMode
-                    ? "rgba(255, 215, 0, 0.2)"  
+                    ? "rgba(255, 215, 0, 0.2)"
                     : "transparent",
                   "&:hover": {
                     backgroundColor: kingMode
@@ -675,25 +708,74 @@ function ReqHR() {
                       Aadhar Number
                     </label>
                     <span className="mandatory">*</span>
-                    <input
-                      type="text"
-                      id="aadharCardNumber"
-                      value={
-                        kingMode
-                          ? aadharCardNumber
-                          : maskAadharNumber(aadharCardNumber)
-                      }
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (/^\d*$/.test(value) && value.length <= 12) {
-                          setAadharCardNumber(value);
+                    <div className="input-container">
+                      <input
+                        type="text"
+                        id="aadharCardNumber"
+                        value={
+                          // Always show full number in manual mode or king mode
+                          // Otherwise mask if valid Aadhar exists
+                          manualAadharEntry ||
+                          kingMode ||
+                          !aadharCardNumber ||
+                          !/^\d{12}$/.test(aadharCardNumber)
+                            ? aadharCardNumber
+                            : maskAadharNumber(aadharCardNumber)
                         }
-                      }}
-                      required
-                      maxLength="12"
-                      placeholder="Enter Aadhar Number "
-                      readOnly={!kingMode}
-                    />
+                        onChange={(e) => {
+                          const value = e.target.value;
+
+                          if (manualAadharEntry || kingMode) {
+                            if (/^\d*$/.test(value) && value.length <= 12) {
+                              setAadharCardNumber(value);
+                            }
+                          }
+                        }}
+                        required
+                        maxLength="12"
+                        placeholder="Enter Aadhar Number"
+                        readOnly={
+                          !kingMode &&
+                          !manualAadharEntry &&
+                          aadharCardNumber &&
+                          /^\d{12}$/.test(aadharCardNumber)
+                        }
+                        style={{
+                          borderColor: manualAadharEntry
+                            ? theme.palette.warning.main
+                            : "",
+                          backgroundColor: manualAadharEntry
+                            ? theme.palette.warning.light + "20"
+                            : aadharCardNumber &&
+                              /^\d{12}$/.test(aadharCardNumber) &&
+                              !kingMode
+                            ? "#f0f0f0"
+                            : "",
+                        }}
+                      />
+                    </div>
+                    {/* Status indicators */}
+                    {manualAadharEntry && (
+                      <Typography variant="caption" color="warning.main">
+                        Please enter Aadhar manually
+                      </Typography>
+                    )}
+                    {aadharCardNumber &&
+                      /^\d{12}$/.test(aadharCardNumber) &&
+                      !manualAadharEntry &&
+                      !kingMode && (
+                        <Typography variant="caption" color="success.main">
+                          ✓ Valid Aadhar from HRone database
+                        </Typography>
+                      )}
+                    {aadharCardNumber &&
+                      !/^\d{12}$/.test(aadharCardNumber) &&
+                      !manualAadharEntry &&
+                      !kingMode && (
+                        <Typography variant="caption" color="error.main">
+                          Invalid Aadhar format
+                        </Typography>
+                      )}
                   </div>
                   <div className="form-group col-4">
                     <label
@@ -847,6 +929,12 @@ function ReqHR() {
                 open={vipModalOpen}
                 onClose={handleVipModalClose}
                 onYes={handleVipModalYes}
+              />
+              <AadharValidationModal
+                open={aadharValidationError}
+                // onClose={handleAadharModalClose}
+                onManualEntry={handleAadharManualEntry}
+                fetchedAadhar={originalAadhar}
               />
             </div>
           </Paper>
