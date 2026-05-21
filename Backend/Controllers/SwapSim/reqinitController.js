@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const swapinitRequest = async (req, res) => {
-    const { employeeCode, oldUserCugNumber, oldUserEmployeeCode ,remarksByHR} = req.body;
+    const { employeeCode, oldUserCugNumber, oldUserEmployeeCode, remarksByHR, action, iccidNumber, imsiNumber, simId } = req.body;
     const requestedByEmployeeCode = req.user ? req.user.employeeCode : null;
 
     if (!employeeCode || !oldUserCugNumber || !oldUserEmployeeCode || !requestedByEmployeeCode || !remarksByHR) {
@@ -114,9 +114,9 @@ export const swapinitRequest = async (req, res) => {
                 // Insert SIM request into database
                 const insertSimRequestQuery = `
                     INSERT INTO SIMRequest 
-                        (employeeCode, employeeName, department, personalNumber, personalEmail, DOB, designation, region, branchLocation, aadharCardNumber, panCardNumber, homeAddress, requestedBy, oldUserCugNumber, oldUserEmployeeCode, SIMALLOCATIONTYPE, requestType, requestStatus, cugNumber, telecomPartner ,remarksByHR) 
+                        (employeeCode, employeeName, department, personalNumber, personalEmail, DOB, designation, region, branchLocation, aadharCardNumber, panCardNumber, homeAddress, requestedBy, oldUserCugNumber, oldUserEmployeeCode, SIMALLOCATIONTYPE, requestType, requestStatus, cugNumber, telecomPartner, remarksByHR, action, iccidNumber, imsiNumber) 
                     VALUES 
-                        (@employeeCode, @employeeName, @department, @personalNumber, @personalEmail, @dob, @designation, @region, @branchLocation, @aadharCardNumber, @panCardNumber, @homeAddress, @requestedBy, @oldUserCugNumber, @oldUserEmployeeCode, 'SwapSIM', 'Activation', 'Pending', @cugNumber, @telecomPartner, @remarksByHR);
+                        (@employeeCode, @employeeName, @department, @personalNumber, @personalEmail, @dob, @designation, @region, @branchLocation, @aadharCardNumber, @panCardNumber, @homeAddress, @requestedBy, @oldUserCugNumber, @oldUserEmployeeCode, 'SwapSIM', 'Activation', 'Pending', @cugNumber, @telecomPartner, @remarksByHR, @action, @iccidNumber, @imsiNumber);
                 `;
 
                 const insertRequest = new sql.Request(transaction);
@@ -139,6 +139,9 @@ export const swapinitRequest = async (req, res) => {
                     .input('cugNumber', sql.VarChar, oldUserCugNumber)
                     .input('telecomPartner', sql.VarChar, telecomPartner)
                     .input('remarksByHR', sql.VarChar, remarksByHR)
+                    .input('action', sql.VarChar, action || null)
+                    .input('iccidNumber', sql.VarChar, iccidNumber || null)
+                    .input('imsiNumber', sql.VarChar, imsiNumber || null)
                     .query(insertSimRequestQuery);
 
                 await transaction.commit();
@@ -146,12 +149,14 @@ export const swapinitRequest = async (req, res) => {
                 res.status(201).json({ message: 'SIM request created successfully and SIM assignment updated' });
             } catch (transactionError) {
                 await transaction.rollback();
-                res.status(500).json({ error: 'Failed to create SIM request and update SIM assignment' });
+                console.error('Transaction error:', transactionError);
+                res.status(500).json({ error: 'Failed to create SIM request and update SIM assignment', details: transactionError.message });
             }
         } else {
             return res.status(500).json({ message: 'Failed to fetch employee data' });
         }
     } catch (err) {
-            res.status(500).json({ error: 'Unexpected error occurred' });  
+            console.error('Unexpected error:', err);
+            res.status(500).json({ error: 'Unexpected error occurred', details: err.message });  
     }
 };

@@ -25,7 +25,8 @@ export const approveSimRequest = async (req, res) => {
                 approvalRemarks = @approvalRemarks,
                 updatedAt = GETDATE()
             WHERE employeeCode = @employeeCode 
-              AND requestType = @requestType;
+              AND requestType = @requestType
+              AND requestStatus = 'Need Approval';
         `;
 
         request.input('employeeCode', sql.VarChar, employeeCode);

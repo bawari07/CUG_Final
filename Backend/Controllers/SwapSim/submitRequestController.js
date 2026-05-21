@@ -63,16 +63,69 @@ export const swapSubmitReq = async (req, res) => {
 
             const { cugNumber } = selectResult.recordset[0];
 
-            // Insert into SIMAssignments
-            const insertSimAssignmentQuery = `
-                INSERT INTO SIMAssignments (status, employeeCode, assignedDate, requestID, cugNumber)
-                VALUES ('Active', @employeeCode, GETDATE(), @requestID, @cugNumber);
+            // Step 1: Free up the OLD ICCID/IMSI (reset cugNumber to NULL in SimCardsMaster)
+            const resetOldSimCardQuery = `
+                UPDATE SimCardsMaster
+                SET cugNumber = NULL,
+                    rechargePlan = NULL,
+                    updatedDate = GETDATE()
+                WHERE cugNumber = @cugNumber;
             `;
             await transaction.request()
+                .input('cugNumber', sql.VarChar, cugNumber)
+                .query(resetOldSimCardQuery);
+
+            // Step 2: Get the new ICCID from the current request
+            const selectNewIccidQuery = `
+                SELECT iccidNumber
+                FROM SIMRequest
+                WHERE requestID = @requestID;
+            `;
+            const newIccidResult = await transaction.request()
+                .input('requestID', sql.Int, requestID)
+                .query(selectNewIccidQuery);
+
+            if (newIccidResult.recordset.length === 0 || !newIccidResult.recordset[0].iccidNumber) {
+                await transaction.rollback();
+                return res.status(404).json({ message: 'New ICCID Number not found for this swap request' });
+            }
+
+            const { iccidNumber: newIccidNumber } = newIccidResult.recordset[0];
+
+            // Step 3: Update the NEW ICCID/IMSI with the CUG number
+            const updateNewSimCardQuery = `
+                UPDATE SimCardsMaster
+                SET cugNumber = @cugNumber,
+                    rechargePlan = @rechargePlan,
+                    updatedDate = GETDATE()
+                WHERE iccidNumber = @iccidNumber;
+            `;
+            await transaction.request()
+                .input('cugNumber', sql.VarChar, cugNumber)
+                .input('rechargePlan', sql.VarChar, rechargePlan)
+                .input('iccidNumber', sql.VarChar, newIccidNumber)
+                .query(updateNewSimCardQuery);
+
+            // Step 4: Update existing SIMAssignment (that was marked as 'Reassigned' during init)
+            const updateSimAssignmentQuery = `
+                UPDATE SIMAssignments
+                SET status = 'Active',
+                    employeeCode = @employeeCode,
+                    assignedDate = GETDATE(),
+                    requestID = @requestID
+                WHERE cugNumber = @cugNumber
+                AND status = 'Reassigned';
+            `;
+            const updateAssignmentResult = await transaction.request()
                 .input('employeeCode', sql.VarChar, employeeCode)
                 .input('requestID', sql.Int, requestID)
                 .input('cugNumber', sql.VarChar, cugNumber)
-                .query(insertSimAssignmentQuery);
+                .query(updateSimAssignmentQuery);
+
+            if (updateAssignmentResult.rowsAffected[0] === 0) {
+                await transaction.rollback();
+                return res.status(404).json({ message: 'No reassigned SIM assignment found to update' });
+            }
 
             // Commit transaction
             await transaction.commit();

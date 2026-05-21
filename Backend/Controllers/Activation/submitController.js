@@ -2,7 +2,7 @@ import { sql, poolPromise } from '../../Database/db.js';
 import { sendEmail } from '../../Services/emailService.js';
 
 export const submitSimRequest = async (req, res) => {
-    const { requestID, cugNumber, rechargePlan, remarksByIT } = req.body;
+    const { requestID, cugNumber, rechargePlan, remarksByIT, isB2B, b2bRemark } = req.body;
     const requestCompletedByEmployeeCode = req.user?.employeeCode;
 
     if (!requestCompletedByEmployeeCode) {
@@ -43,12 +43,14 @@ export const submitSimRequest = async (req, res) => {
         // Step 2: Update the SIM request status and details
         const updateSimRequestQuery = `
             UPDATE SIMRequest
-            SET 
+            SET
                 requestStatus = 'Completed',
                 cugNumber = @cugNumber,
                 rechargePlan = @rechargePlan,
                 requestCompletedBy = @requestCompletedBy,
                 remarksByIT = @remarksByIT,
+                isB2B = @isB2B,
+                b2bRemark = @b2bRemark,
                 requestCompletedDate = GETDATE()
             WHERE requestID = @requestID;
         `;
@@ -59,6 +61,8 @@ export const submitSimRequest = async (req, res) => {
             .input('rechargePlan', sql.VarChar, rechargePlan)
             .input('requestCompletedBy', sql.VarChar, requestCompletedByEmployeeCode)
             .input('remarksByIT', sql.VarChar, remarksByIT)
+            .input('isB2B', sql.Bit, isB2B != null ? (isB2B === true || isB2B === 'true' ? 1 : 0) : null)
+            .input('b2bRemark', sql.VarChar, b2bRemark ?? null)
             .query(updateSimRequestQuery);
 
         // Step 3: Update SIM card data

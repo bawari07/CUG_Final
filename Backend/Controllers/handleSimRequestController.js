@@ -5,7 +5,7 @@ export const handleSimRequest = async (req, res) => {
     const {
         requestType, region, department, employeeCode, employeeName,
         personalNumber, personalEmail, workEmail, dob, designation,
-        branchLocation, aadharCardNumber, panCardNumber, homeAddress, remarksByHR ,specialNumber
+        branchLocation, aadharCardNumber, panCardNumber, homeAddress, remarksByHR, specialNumber, pinCode
     } = req.body;
 
     const requestedByEmployeeCode = req.user?.employeeCode;
@@ -50,11 +50,11 @@ export const handleSimRequest = async (req, res) => {
         }
 
         // If a similar request exists and is not rejected
-        if (count > 0 && requestStatus !== 'Rejected') {
-            return res.status(400).json({
-                message: 'A similar request already exists and is not rejected. Please update the existing request.'
-            });
-        }
+        // if (count > 0 && requestStatus !== 'Rejected') {
+        //     return res.status(400).json({
+        //         message: 'A similar request already exists and is not rejected. Please update the existing request.'
+        //     });
+        // }
 
         // Insert or update the SIM request
         const [simRequestResult, emailResult] = await Promise.all([
@@ -76,6 +76,7 @@ export const handleSimRequest = async (req, res) => {
                 .input('requestedBy', sql.VarChar, requestedByEmployeeCode)
                 .input('remarksByHR', sql.VarChar, remarksByHR)
                 .input('specialNumber', sql.Bit, specialNumber)
+                .input('pinCode', sql.VarChar, pinCode || null)
                 .execute('HandleSIMRequest'),
             pool.request()
                 .input('employeeCode', sql.VarChar, requestedByEmployeeCode)
@@ -102,12 +103,17 @@ export const handleSimRequest = async (req, res) => {
             });
         }
 
+        const errorStatusMessages = [
+            'User already has a CUG SIM.',
+            'No active SIM assigned to this user or the SIM is already deactivated or suspended.',
+        ];
+
         // Handle specific cases based on the status message
-        if (['User already has a CUG SIM.', 'No active SIM assigned to this user or the SIM is already deactivated or suspended.'].includes(statusMessage)) {
-            return res.status(400).json({ message: statusMessage });
+        if (errorStatusMessages.includes(statusMessage)) {
+            return res.status(500).json({ message: statusMessage });
         }
 
-        return res.status(201).json({ message: statusMessage });
+        return res.status(200).json({ message: statusMessage });
     } catch (err) {
         console.error('Error processing SIM request:', err);
         return res.status(500).json({ message: 'Error processing SIM request' });

@@ -36,8 +36,7 @@ export const submitSimRequest = async (req, res) => {
                 SELECT cugNumber
                 FROM SIMAssignments
                 WHERE employeeCode = @employeeCode 
-                AND status = 'Active' 
-                AND (deactivatedDate IS NULL OR suspendedDate IS NULL);
+                AND deactivatedDate IS NULL;
             `;
             request.input('employeeCode', sql.VarChar, employeeCode);
             const simResult = await request.query(getSimNumberQuery);

@@ -2,10 +2,15 @@ import { sql } from '../../Database/db.js';
 
 export const requestinit = async (req, res) => {
     const { requestID, iccidNumber, imsiNumber, telecomPartner } = req.body;
+    const updatedByEmployeeCode = req.user?.employeeCode;
 
     // Validate inputs
     if (!requestID || !iccidNumber || !imsiNumber || !telecomPartner) {
         return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    if (!updatedByEmployeeCode) {
+        return res.status(401).json({ message: 'User not authenticated or employee code missing' });
     }
 
     try {
@@ -19,6 +24,7 @@ export const requestinit = async (req, res) => {
                 .input('iccidNumber', sql.VarChar(50), iccidNumber)
                 .input('imsiNumber', sql.VarChar(50), imsiNumber)
                 .input('telecomPartner', sql.VarChar(50), telecomPartner)
+                .input('updatedByEmployeeCode', sql.VarChar(50), updatedByEmployeeCode)
                 .execute('requestInit');
 
             // Check if any row was updated
